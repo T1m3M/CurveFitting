@@ -58,8 +58,22 @@ def loading_test_cases():
     return cases_parsing(file_lines[1:], total_cases)
 
 
+def genome_generation(polynomialDegree):
+    return [round(uniform(-10, 10), 2) for _ in range(polynomialDegree)]
+
+
+def population_generation(population_size, polynomialDegree):
+    return [genome_generation(polynomialDegree) for _ in range(population_size)]
+
+
+def run_evolution(case, population_size=100, generation_limit=1000):
+    population = population_generation(population_size, case.polynomialDegree)
+
+
 def main():
     cases = loading_test_cases()
+
+    run_evolution(cases[0])
 
 
 if __name__ == '__main__':
