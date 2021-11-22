@@ -57,3 +57,10 @@ def loading_test_cases():
     total_cases = int(file_lines[0])
     return cases_parsing(file_lines[1:], total_cases)
 
+
+def main():
+    cases = loading_test_cases()
+
+
+if __name__ == '__main__':
+    main()
