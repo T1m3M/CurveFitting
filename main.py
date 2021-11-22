@@ -66,10 +66,31 @@ def population_generation(population_size, polynomialDegree):
     return [genome_generation(polynomialDegree) for _ in range(population_size)]
 
 
+def fitness(genome, actualPoints, polynomialDegree):
+    sumOfSquaredErrors = 0
+
+    for actualPoint in actualPoints:
+        y_calculated = 0
+
+        # calculate Y = a*X^0 + b*X^1 + c * X^2 + ... + n X^i
+        for i in range(polynomialDegree + 1):
+            y_calculated += genome[i] * pow(actualPoint.x, i)
+
+        squaredError = pow((actualPoint.y - y_calculated), 2)
+        sumOfSquaredErrors += squaredError
+
+    meanSquaredError = sumOfSquaredErrors / len(actualPoints)
+
+    return meanSquaredError
+
+
 def run_evolution(case, population_size=100, generation_limit=1000):
     population = population_generation(population_size, case.polynomialDegree)
 
     print(population)
+
+    # TODO: to be for loop for all population
+    fitness(population[0], case.points, case.polynomialDegree)
 
 
 def main():
