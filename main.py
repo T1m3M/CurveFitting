@@ -59,7 +59,7 @@ def loading_test_cases():
 
 
 def genome_generation(polynomialDegree):
-    return [round(uniform(-10, 10), 2) for _ in range(polynomialDegree)]
+    return [round(uniform(-10, 10), 2) for _ in range(polynomialDegree + 1)]
 
 
 def population_generation(population_size, polynomialDegree):
@@ -68,6 +68,8 @@ def population_generation(population_size, polynomialDegree):
 
 def run_evolution(case, population_size=100, generation_limit=1000):
     population = population_generation(population_size, case.polynomialDegree)
+
+    print(population)
 
 
 def main():
