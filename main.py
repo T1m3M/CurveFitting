@@ -87,10 +87,11 @@ def fitness(genome, actualPoints, polynomialDegree):
 def run_evolution(case, population_size=100, generation_limit=1000):
     population = population_generation(population_size, case.polynomialDegree)
 
-    genomes_errors = []
-
-    for genome in population:
-        genomes_errors.append(fitness(genome, case.points, case.polynomialDegree))
+    # sorting the population in ascending order
+    population = sorted(
+        population,
+        key=lambda genome: fitness(genome, case.points, case.polynomialDegree)
+    )
 
 
 def main():
