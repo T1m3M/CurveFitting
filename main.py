@@ -134,38 +134,45 @@ def mutation(genome, t, T, b=2):
     return genome
 
 
-def run_evolution(case, population_size=100, generation_limit=1000):
+def run_evolution(case, population_size=20, generation_limit=1000):
     population = population_generation(population_size, case.polynomialDegree)
 
-    # sorting the population in ascending order
+    for generation_number in range(generation_limit):
+        # sorting the population in ascending order
+        population = sorted(
+            population,
+            key=lambda genome: fitness(genome, case.points, case.polynomialDegree)
+        )
+
+        # Elitism  (best 2 solutions remains in next generation)
+        next_generation = population[:2]
+
+        # tournament selection
+        for _ in range(int(len(population) / 2) - 1):
+            parents = tournament_selection(population, case.points, case.polynomialDegree)
+            offspring_a, offspring_b = crossover(parents[0], parents[1])
+
+            offspring_a = mutation(offspring_a, generation_number, generation_limit)
+            offspring_b = mutation(offspring_b, generation_number, generation_limit)
+
+            next_generation += [offspring_a, offspring_b]
+
+        population = next_generation
+
+    # sorting final generation's populating in ascending order
     population = sorted(
         population,
         key=lambda genome: fitness(genome, case.points, case.polynomialDegree)
     )
 
-    # Elitism  (best 2 solutions remains in next generation)
-    next_generation = population[:2]
-
-    # TODO: to be removed after making generations loop
-    generation_number = 0
-
-    # tournament selection
-    for _ in range(int(len(population) / 2) - 1):
-        parents = tournament_selection(population, case.points, case.polynomialDegree)
-        offspring_a, offspring_b = crossover(parents[0], parents[1])
-
-        offspring_a = mutation(offspring_a, generation_number, generation_limit)
-        offspring_b = mutation(offspring_b, generation_number, generation_limit)
-
-        next_generation += [offspring_a, offspring_b]
-
-    population = next_generation
+    # returning best solution
+    return population[0]
 
 
 def main():
     cases = loading_test_cases()
 
-    run_evolution(cases[0])
+    solution = run_evolution(cases[0])
 
 
 if __name__ == '__main__':
