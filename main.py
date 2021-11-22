@@ -87,10 +87,10 @@ def fitness(genome, actualPoints, polynomialDegree):
 def run_evolution(case, population_size=100, generation_limit=1000):
     population = population_generation(population_size, case.polynomialDegree)
 
-    print(population)
+    genomes_errors = []
 
-    # TODO: to be for loop for all population
-    fitness(population[0], case.points, case.polynomialDegree)
+    for genome in population:
+        genomes_errors.append(fitness(genome, case.points, case.polynomialDegree))
 
 
 def main():
