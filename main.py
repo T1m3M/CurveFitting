@@ -1,5 +1,6 @@
 import matplotlib.pyplot as plt
 from random import uniform, choices, sample, random
+import numpy as np
 
 
 class Point:
@@ -66,16 +67,19 @@ def population_generation(population_size, polynomialDegree):
     return [genome_generation(polynomialDegree) for _ in range(population_size)]
 
 
+def cost_function(coefficients, x, degree):
+    y = 0
+    # calculate Y = a*X^0 + b*X^1 + c * X^2 + ... + n X^i
+    for i in range(degree + 1):
+        y += coefficients[i] * pow(x, i)
+    return y
+
+
 def fitness(genome, actualPoints, polynomialDegree):
     sumOfSquaredErrors = 0
 
     for actualPoint in actualPoints:
-        y_calculated = 0
-
-        # calculate Y = a*X^0 + b*X^1 + c * X^2 + ... + n X^i
-        for i in range(polynomialDegree + 1):
-            y_calculated += genome[i] * pow(actualPoint.x, i)
-
+        y_calculated = cost_function(genome, actualPoint.x, polynomialDegree)
         squaredError = pow((actualPoint.y - y_calculated), 2)
         sumOfSquaredErrors += squaredError
 
