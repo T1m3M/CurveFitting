@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from random import uniform
+from random import uniform, choices
 
 
 class Point:
@@ -84,6 +84,24 @@ def fitness(genome, actualPoints, polynomialDegree):
     return meanSquaredError
 
 
+def tournament_selection(population, actualPoints, polynomialDegree):
+    best_pairs = []
+
+    for _ in range(2):
+        # selecting 2 random pairs from population
+        random_pairs = choices(population=population, k=2)
+
+        # sort to get the least of them
+        random_pairs = sorted(
+            random_pairs,
+            key=lambda genome: fitness(genome, actualPoints, polynomialDegree)
+        )
+
+        best_pairs.append(random_pairs[0])
+
+    return best_pairs
+
+
 def run_evolution(case, population_size=100, generation_limit=1000):
     population = population_generation(population_size, case.polynomialDegree)
 
@@ -92,6 +110,12 @@ def run_evolution(case, population_size=100, generation_limit=1000):
         population,
         key=lambda genome: fitness(genome, case.points, case.polynomialDegree)
     )
+
+    # Elitism  (best 2 solutions remains in next generation)
+    next_generation = population[:2]
+
+    # tournament selection
+    parents = tournament_selection(population, case.points, case.polynomialDegree)
 
 
 def main():
