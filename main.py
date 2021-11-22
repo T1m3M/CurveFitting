@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from random import uniform, choices, sample
+from random import uniform, choices, sample, random
 
 
 class Point:
@@ -111,6 +111,29 @@ def crossover(genome_a, genome_b):
            genome_b[:point_1] + genome_a[point_1:point_2] + genome_b[point_2:]
 
 
+def mutation(genome, t, T, b=2):
+    # Non-uniform floating point mutation
+    lowerBound = -10
+    upperBound = 10
+
+    for i in range(len(genome)):
+        delta_L = genome[i] - lowerBound
+        delta_U = upperBound - genome[i]
+
+        # flipping a coin to see whether it will increase or decrease
+        if random() <= 0.5:
+            y = delta_L
+        else:
+            y = delta_U
+
+        r = random()
+        delta = y * (1 - pow(r, pow(1 - t / T, b)))
+
+        genome[i] = genome[i] + delta
+
+    return genome
+
+
 def run_evolution(case, population_size=100, generation_limit=1000):
     population = population_generation(population_size, case.polynomialDegree)
 
@@ -123,10 +146,20 @@ def run_evolution(case, population_size=100, generation_limit=1000):
     # Elitism  (best 2 solutions remains in next generation)
     next_generation = population[:2]
 
+    # TODO: to be removed after making generations loop
+    generation_number = 0
+
     # tournament selection
     for _ in range(int(len(population) / 2) - 1):
         parents = tournament_selection(population, case.points, case.polynomialDegree)
         offspring_a, offspring_b = crossover(parents[0], parents[1])
+
+        offspring_a = mutation(offspring_a, generation_number, generation_limit)
+        offspring_b = mutation(offspring_b, generation_number, generation_limit)
+
+        next_generation += [offspring_a, offspring_b]
+
+    population = next_generation
 
 
 def main():
