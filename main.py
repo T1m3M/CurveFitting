@@ -1,5 +1,5 @@
 import matplotlib.pyplot as plt
-from random import uniform, choices
+from random import uniform, choices, sample
 
 
 class Point:
@@ -102,6 +102,15 @@ def tournament_selection(population, actualPoints, polynomialDegree):
     return best_pairs
 
 
+def crossover(genome_a, genome_b):
+    # 2-point crossover
+    point_1, point_2 = sample(range(1, len(genome_a) - 1), 2)
+    point_2 += point_1
+
+    return genome_a[:point_1] + genome_b[point_1:point_2] + genome_a[point_2:], \
+           genome_b[:point_1] + genome_a[point_1:point_2] + genome_b[point_2:]
+
+
 def run_evolution(case, population_size=100, generation_limit=1000):
     population = population_generation(population_size, case.polynomialDegree)
 
@@ -115,7 +124,9 @@ def run_evolution(case, population_size=100, generation_limit=1000):
     next_generation = population[:2]
 
     # tournament selection
-    parents = tournament_selection(population, case.points, case.polynomialDegree)
+    for _ in range(int(len(population) / 2) - 1):
+        parents = tournament_selection(population, case.points, case.polynomialDegree)
+        offspring_a, offspring_b = crossover(parents[0], parents[1])
 
 
 def main():
