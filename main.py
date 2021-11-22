@@ -48,3 +48,12 @@ def cases_parsing(file_data, total_cases):
         cases.append(case)
 
     return cases
+
+
+def loading_test_cases():
+    with open("input-2.txt") as f:
+        file_lines = f.read().splitlines()
+
+    total_cases = int(file_lines[0])
+    return cases_parsing(file_lines[1:], total_cases)
+
