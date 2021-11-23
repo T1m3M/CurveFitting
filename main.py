@@ -214,6 +214,7 @@ def main():
         solution, error = run_evolution(cases[case_number])
         plot_curve(case_number + 1, solution, cases[case_number])
 
+        print("CASE #" + str(case_number + 1))
         print("Coefficients = " + str(solution))
         print("Error = " + str(error))
 
