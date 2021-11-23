@@ -141,7 +141,9 @@ def mutation(genome, t, T, b=2.5):
     return genome
 
 
-def plot_curve(coefficients, case):
+def plot_curve(case_number, coefficients, case):
+    plt.ylim(-2, 2)
+
     X = np.linspace(0, 7, 100)
     Y = cost_function(coefficients, X, case.polynomialDegree)
 
@@ -150,8 +152,9 @@ def plot_curve(coefficients, case):
 
     # plot solution curve
     plt.plot(X, Y, color='red', linewidth=2, label="prediction")
-
-    plt.ylim(-2, 2)
+    plt.title("Case " + str(case_number))
+    # TODO: comment savefig line at the end
+    plt.savefig('plots\\case_' + str(case_number) + '.png')
     plt.show()
 
 
@@ -189,8 +192,6 @@ def run_evolution(case, population_size=100, generation_limit=1000):
     best_solution = population[0]
     error = fitness(best_solution, case.points, case.polynomialDegree)
 
-    plot_curve(best_solution, case)
-
     # returning best solution
     return best_solution, error
 
@@ -206,11 +207,15 @@ def saving_solution_to_file(case_number, solution, error):
 def main():
     cases = loading_test_cases()
 
-    case_number = 0
+    for case_number in range(len(cases)):
+        solution, error = run_evolution(cases[case_number])
+        plot_curve(case_number, solution, cases[case_number])
 
-    solution, error = run_evolution(cases[case_number])
+        print("Coefficients = " + str(solution))
+        print("Error = " + str(error))
 
-    saving_solution_to_file(case_number, solution, error)
+        # TODO: comment below line at the end
+        saving_solution_to_file(case_number, solution, error)
 
 
 if __name__ == '__main__':
