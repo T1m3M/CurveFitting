@@ -133,12 +133,15 @@ def mutation(genome, t, T, b=2):
         r = random()
         delta = y * (1 - pow(r, pow(1 - t / T, b)))
 
-        genome[i] = genome[i] + delta
+        if y == delta_U:
+            genome[i] = genome[i] + delta
+        else:
+            genome[i] = genome[i] - delta
 
     return genome
 
 
-def run_evolution(case, population_size=20, generation_limit=1000):
+def run_evolution(case, population_size=100, generation_limit=1000):
     population = population_generation(population_size, case.polynomialDegree)
 
     for generation_number in range(generation_limit):
