@@ -153,8 +153,8 @@ def plot_curve(case_number, coefficients, case):
     # plot solution curve
     plt.plot(X, Y, color='red', linewidth=2, label="prediction")
     plt.title("Case " + str(case_number))
-    # TODO: comment savefig line at the end
-    plt.savefig('plots\\case_' + str(case_number) + '.png')
+
+    # plt.savefig('plots\\case_' + str(case_number) + '.png')
     plt.show()
 
 
@@ -214,8 +214,7 @@ def main():
         print("Coefficients = " + str(solution))
         print("Error = " + str(error))
 
-        # TODO: comment below line at the end
-        saving_solution_to_file(case_number + 1, solution, error)
+        # saving_solution_to_file(case_number + 1, solution, error)
 
 
 if __name__ == '__main__':
