@@ -115,7 +115,7 @@ def crossover(genome_a, genome_b):
     point_2 = crossover_points[1]
 
     return genome_a[:point_1] + genome_b[point_1:point_2] + genome_a[point_2:], \
-           genome_b[:point_1] + genome_a[point_1:point_2] + genome_b[point_2:]
+        genome_b[:point_1] + genome_a[point_1:point_2] + genome_b[point_2:]
 
 
 def mutation(genome, t, T, b=2.5):
@@ -157,7 +157,7 @@ def plot_curve(case_number, coefficients, case):
     plt.plot(X, Y, color='red', linewidth=2, label="prediction")
     plt.title("Case " + str(case_number))
 
-    plt.savefig('plots\\case_' + str(case_number) + '.png')
+    # plt.savefig('plots\\case_' + str(case_number) + '.png')
     plt.show()
 
 
@@ -217,7 +217,7 @@ def main():
         print("Coefficients = " + str(solution))
         print("Error = " + str(error))
 
-        saving_solution_to_file(case_number + 1, solution, error)
+        # saving_solution_to_file(case_number + 1, solution, error)
 
 
 if __name__ == '__main__':
