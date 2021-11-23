@@ -108,8 +108,11 @@ def tournament_selection(population, actualPoints, polynomialDegree):
 
 def crossover(genome_a, genome_b):
     # 2-point crossover
-    point_1, point_2 = sample(range(1, len(genome_a) - 1), 2)
-    point_2 += point_1
+    crossover_points = sample(range(1, len(genome_a) - 1), 2)
+    crossover_points = sorted(crossover_points)
+    # making sure point_1 < point_2
+    point_1 = crossover_points[0]
+    point_2 = crossover_points[1]
 
     return genome_a[:point_1] + genome_b[point_1:point_2] + genome_a[point_2:], \
            genome_b[:point_1] + genome_a[point_1:point_2] + genome_b[point_2:]
@@ -154,7 +157,7 @@ def plot_curve(case_number, coefficients, case):
     plt.plot(X, Y, color='red', linewidth=2, label="prediction")
     plt.title("Case " + str(case_number))
 
-    # plt.savefig('plots\\case_' + str(case_number) + '.png')
+    plt.savefig('plots\\case_' + str(case_number) + '.png')
     plt.show()
 
 
@@ -214,7 +217,7 @@ def main():
         print("Coefficients = " + str(solution))
         print("Error = " + str(error))
 
-        # saving_solution_to_file(case_number + 1, solution, error)
+        saving_solution_to_file(case_number + 1, solution, error)
 
 
 if __name__ == '__main__':
