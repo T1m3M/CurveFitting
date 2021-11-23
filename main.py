@@ -158,7 +158,7 @@ def plot_curve(case_number, coefficients, case):
     plt.show()
 
 
-def run_evolution(case, population_size=100, generation_limit=1000):
+def run_evolution(case, population_size=100, generation_limit=2000):
     population = population_generation(population_size, case.polynomialDegree)
 
     for generation_number in range(generation_limit):
@@ -209,13 +209,13 @@ def main():
 
     for case_number in range(len(cases)):
         solution, error = run_evolution(cases[case_number])
-        plot_curve(case_number, solution, cases[case_number])
+        plot_curve(case_number + 1, solution, cases[case_number])
 
         print("Coefficients = " + str(solution))
         print("Error = " + str(error))
 
         # TODO: comment below line at the end
-        saving_solution_to_file(case_number, solution, error)
+        saving_solution_to_file(case_number + 1, solution, error)
 
 
 if __name__ == '__main__':
