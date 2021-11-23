@@ -115,7 +115,7 @@ def crossover(genome_a, genome_b):
            genome_b[:point_1] + genome_a[point_1:point_2] + genome_b[point_2:]
 
 
-def mutation(genome, t, T, b=2):
+def mutation(genome, t, T, b=2.5):
     # Non-uniform floating point mutation
     lowerBound = -10
     upperBound = 10
@@ -141,6 +141,20 @@ def mutation(genome, t, T, b=2):
     return genome
 
 
+def plot_curve(coefficients, case):
+    X = np.linspace(0, 7, 100)
+    Y = cost_function(coefficients, X, case.polynomialDegree)
+
+    # scatter actual points
+    plt.scatter(case.getXPoints(), case.getYPoints(), color='blue')
+
+    # plot solution curve
+    plt.plot(X, Y, color='red', linewidth=2, label="prediction")
+
+    plt.ylim(-2, 2)
+    plt.show()
+
+
 def run_evolution(case, population_size=100, generation_limit=1000):
     population = population_generation(population_size, case.polynomialDegree)
 
@@ -154,7 +168,7 @@ def run_evolution(case, population_size=100, generation_limit=1000):
         # Elitism  (best 2 solutions remains in next generation)
         next_generation = population[:2]
 
-        # tournament selection
+        # mating pool and mutation
         for _ in range(int(len(population) / 2) - 1):
             parents = tournament_selection(population, case.points, case.polynomialDegree)
             offspring_a, offspring_b = crossover(parents[0], parents[1])
@@ -172,14 +186,19 @@ def run_evolution(case, population_size=100, generation_limit=1000):
         key=lambda genome: fitness(genome, case.points, case.polynomialDegree)
     )
 
+    best_solution = population[0]
+    error = fitness(best_solution, case.points, case.polynomialDegree)
+
+    plot_curve(best_solution, case)
+
     # returning best solution
-    return population[0]
+    return best_solution, error
 
 
 def main():
     cases = loading_test_cases()
 
-    solution = run_evolution(cases[0])
+    solution, error = run_evolution(cases[0])
 
 
 if __name__ == '__main__':
