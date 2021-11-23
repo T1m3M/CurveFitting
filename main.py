@@ -195,10 +195,22 @@ def run_evolution(case, population_size=100, generation_limit=1000):
     return best_solution, error
 
 
+def saving_solution_to_file(case_number, solution, error):
+    with open("output.txt", "a") as f:
+        f.write("CASE #" + str(case_number) + "\n")
+        for coefficient in solution:
+            f.write(str(coefficient) + " ")
+        f.write("Error=" + str(error) + "\n\n")
+
+
 def main():
     cases = loading_test_cases()
 
-    solution, error = run_evolution(cases[0])
+    case_number = 0
+
+    solution, error = run_evolution(cases[case_number])
+
+    saving_solution_to_file(case_number, solution, error)
 
 
 if __name__ == '__main__':
